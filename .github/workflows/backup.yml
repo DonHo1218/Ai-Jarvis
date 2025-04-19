@@ -1,26 +1,2 @@
 name: GPT Backup
-
-on:
-  schedule:
-    - cron: '0 19 * * *'
-  workflow_dispatch:
-
-jobs:
-  backup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: pip install -r BACKUP/scripts/requirements.txt
-
-      - name: Run export
-        run: python BACKUP/scripts/export_from_local.py
-
-      - name: Notify Discord
-        run: python BACKUP/scripts/notify_discord.py
+...
