@@ -1,0 +1,35 @@
+name: Daily GPT Backup to GitHub
+
+on:
+  schedule:
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r BACKUP/scripts/requirements.txt
+
+      - name: Generate markdown from chat_backup
+        run: python BACKUP/scripts/export_from_local.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "gptbackup-bot"
+          git config user.email "noreply@example.com"
+          git add BACKUP/
+          git commit -m "📦 Daily ChatGPT Backup"
+          git push
+
+      - name: Send Discord notification
+        run: python BACKUP/scripts/notify_discord.py
