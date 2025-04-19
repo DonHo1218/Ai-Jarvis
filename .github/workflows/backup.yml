@@ -8,6 +8,7 @@ on:
 jobs:
   backup:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -19,8 +20,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r BACKUP/scripts/requirements.txt
 
-      - name: Run export
+      - name: Export ChatGPT Data
         run: python BACKUP/scripts/export_from_local.py
 
       - name: Notify Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python BACKUP/scripts/notify_discord.py
